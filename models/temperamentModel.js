@@ -1,14 +1,21 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../db");
 
-const Temperament = sequelize.define('Temperament', {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+class Temperament extends Model {}
+
+Temperament.init(
+  {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
   },
-}, {
-  timestamps: false, // Disable timestamps
-});
+  {
+    sequelize,
+    modelName: "Temperament",
+    timestamps: false,
+  }
+);
 
 module.exports = Temperament;

@@ -1,7 +1,9 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../db');
 
-const Breed = sequelize.define('Breed', {
+class Breed extends Model {}
+
+Breed.init({
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -27,7 +29,9 @@ const Breed = sequelize.define('Breed', {
     allowNull: false,
   },
 }, {
-  timestamps: false, // Disable timestamps
+  sequelize,
+  modelName: 'Breed',
+  timestamps: false,
 });
 
 module.exports = Breed;

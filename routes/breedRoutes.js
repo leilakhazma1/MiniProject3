@@ -1,7 +1,7 @@
 // routes/breedRoutes.js
 const express = require('express');
 const breedController = require('../controllers/breedController');
-const { populateDatabase } = require('../models/populateDatabase'); 
+const { populateDatabase } = require('../controllers/populateDatabase'); 
 
 const router = express.Router();
 

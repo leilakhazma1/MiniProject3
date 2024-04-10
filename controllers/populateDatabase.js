@@ -32,5 +32,6 @@ const populateDatabase = async () => {
   }
 };
 
-populateDatabase();
+module.exports = {populateDatabase};  
+
 
