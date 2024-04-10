@@ -1,4 +1,4 @@
-const Temperament = require('../models/Temperament');
+const Temperament = require('../models/temperamentModel');
 
 // Create a new temperament
 exports.createTemperament = async (req, res) => {

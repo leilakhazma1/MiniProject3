@@ -1,4 +1,4 @@
-const Breed = require('../models/Breed');
+const Breed = require('../models/breedModel');
 
 // Create a new breed
 exports.createBreed = async (req, res) => {
