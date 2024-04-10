@@ -1,6 +1,9 @@
-const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../db");
+'use strict'
 
+const { DataTypes, Model } = require("sequelize");
+const db = require('../db');
+
+const sequelizeInstance = db.Sequelize;
 class Temperament extends Model {}
 
 Temperament.init(
@@ -12,9 +15,10 @@ Temperament.init(
     },
   },
   {
-    sequelize,
-    modelName: "Temperament",
-    timestamps: false,
+  sequelize: sequelizeInstance,
+  modelName: 'temperaments',
+  timestamps: true,
+  freezeTableName: true
   }
 );
 

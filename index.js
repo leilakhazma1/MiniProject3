@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const breedRoutes = require('./routes/breedRoutes');
 const temperamentRoutes = require('./routes/temperamentRoutes');
+const db = require('./db')
 
 const app = express();
 

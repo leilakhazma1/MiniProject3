@@ -1,5 +1,9 @@
+'use strict'
+
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../db');
+const db = require('../db');
+
+const sequelizeInstance = db.Sequelize;
 
 class Breed extends Model {}
 
@@ -29,9 +33,11 @@ Breed.init({
     allowNull: false,
   },
 }, {
-  sequelize,
-  modelName: 'Breed',
-  timestamps: false,
+  sequelize: sequelizeInstance,
+  modelName: 'breeds',
+  timestamps: true,
+  freezeTableName: true
+
 });
 
 module.exports = Breed;
