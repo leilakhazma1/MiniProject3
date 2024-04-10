@@ -3,6 +3,7 @@ const { Breed } = require('../models/breedModel');
 const { Temperament } = require('../models/temperamentModel');
 
 
+
 const populateDatabase = async () => {
   try {
     const response = await axios.get('https://api.thecatapi.com/v1/breeds');
