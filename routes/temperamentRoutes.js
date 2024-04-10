@@ -1,5 +1,6 @@
 const express = require('express');
 const temperamentController = require('../controllers/temperamentController');
+const { populateDatabase } = require('../controllers/populateDatabase'); 
 
 const router = express.Router();
 
@@ -17,5 +18,11 @@ router.put('/:id', temperamentController.updateTemperament);
 
 // Delete a temperament
 router.delete('/:id', temperamentController.deleteTemperament);
+
+// Populate database route
+router.post('/populate', async (req, res) => {
+  await populateDatabase();
+  res.send('Database populated successfully');
+});
 
 module.exports = router;
