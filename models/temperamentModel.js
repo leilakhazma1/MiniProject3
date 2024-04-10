@@ -7,6 +7,8 @@ const Temperament = sequelize.define('Temperament', {
     allowNull: false,
     unique: true,
   },
+}, {
+  timestamps: false, // Disable timestamps
 });
 
 module.exports = Temperament;

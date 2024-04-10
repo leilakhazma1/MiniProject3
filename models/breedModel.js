@@ -6,11 +6,28 @@ const Breed = sequelize.define('Breed', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  temperament: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  life_span: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   origin: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  // Add other columns as needed
+  wikipedia_url: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+}, {
+  timestamps: false, // Disable timestamps
 });
 
 module.exports = Breed;
