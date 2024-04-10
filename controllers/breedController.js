@@ -1,80 +1,72 @@
-const breedModel = require('../models/breedModel');
+const Breed = require('../models/Breed');
 
-// Controller function to create a new breed
-async function createBreed(req, res) {
-  const breedData = req.body; // Get the breed data from the request body
+// Create a new breed
+exports.createBreed = async (req, res) => {
   try {
-    // Call the model function to create a new breed in the database
-    const breedId = await breedModel.createBreed(breedData);
-    // Return a success response with the ID of the newly created breed
-    res.status(201).json({ id: breedId, message: 'Breed created successfully' });
-  } catch (err) {
-    // Return an error response if the creation fails
-    res.status(500).json({ error: 'Failed to create breed' });
+    const { name, origin } = req.body;
+    const breed = await Breed.create({ name, origin });
+    res.json(breed);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}
+};
 
-// Controller function to get all breeds
-async function getAllBreeds(req, res) {
+// Get all breeds
+exports.getAllBreeds = async (req, res) => {
   try {
-    // Call the model function to get all breeds from the database
-    const breeds = await breedModel.getAllBreeds();
-    // Return a success response with the list of breeds
-    res.status(200).json(breeds);
-  } catch (err) {
-    // Return an error response if fetching breeds fails
-    res.status(500).json({ error: 'Failed to fetch breeds' });
+    const breeds = await Breed.findAll();
+    res.json(breeds);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}
+};
 
-// Controller function to get a breed by ID
-async function getBreedById(req, res) {
-  const id = req.params.id; // Get the breed ID from the request parameters
+// Get breed by ID
+exports.getBreedById = async (req, res) => {
   try {
-    // Call the model function to get the breed by ID from the database
-    const breed = await breedModel.getBreedById(id);
-    // Return a success response with the breed data
-    res.status(200).json(breed);
-  } catch (err) {
-    // Return an error response if the breed is not found
-    res.status(404).json({ error: 'Breed not found' });
+    const { id } = req.params;
+    const breed = await Breed.findByPk(id);
+    if (!breed) {
+      res.status(404).json({ message: 'Breed not found' });
+      return;
+    }
+    res.json(breed);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}
+};
 
-// Controller function to update a breed
-async function updateBreed(req, res) {
-  const id = req.params.id; // Get the breed ID from the request parameters
-  const breedData = req.body; // Get the updated breed data from the request body
+// Update a breed
+exports.updateBreed = async (req, res) => {
   try {
-    // Call the model function to update the breed in the database
-    await breedModel.updateBreed(id, breedData);
-    // Return a success response
-    res.status(200).json({ message: 'Breed updated successfully' });
-  } catch (err) {
-    // Return an error response if updating the breed fails
-    res.status(500).json({ error: 'Failed to update breed' });
+    const { id } = req.params;
+    const { name, origin } = req.body;
+    const breed = await Breed.findByPk(id);
+    if (!breed) {
+      res.status(404).json({ message: 'Breed not found' });
+      return;
+    }
+    breed.name = name;
+    breed.origin = origin;
+    await breed.save();
+    res.json(breed);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}
+};
 
-// Controller function to delete a breed
-async function deleteBreed(req, res) {
-  const id = req.params.id; // Get the breed ID from the request parameters
+// Delete a breed
+exports.deleteBreed = async (req, res) => {
   try {
-    // Call the model function to delete the breed from the database
-    await breedModel.deleteBreed(id);
-    // Return a success response
-    res.status(200).json({ message: 'Breed deleted successfully' });
-  } catch (err) {
-    // Return an error response if deleting the breed fails
-    res.status(500).json({ error: 'Failed to delete breed' });
+    const { id } = req.params;
+    const breed = await Breed.findByPk(id);
+    if (!breed) {
+      res.status(404).json({ message: 'Breed not found' });
+      return;
+    }
+    await breed.destroy();
+    res.json({ message: 'Breed deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}
-
-// Export the controller functions
-module.exports = {
-  createBreed,
-  getAllBreeds,
-  getBreedById,
-  updateBreed,
-  deleteBreed
 };

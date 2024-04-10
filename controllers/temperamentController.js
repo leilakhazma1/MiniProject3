@@ -1,65 +1,71 @@
-const Temperament = require('../models/temperamentModel');
+const Temperament = require('../models/Temperament');
 
-const temperamentController = {
-  // Get all temperaments
-  getAllTemperaments: async (req, res) => {
-    try {
-      const temperaments = await Temperament.getAll();
-      res.json(temperaments);
-    } catch (err) {
-      console.error('Error getting all temperaments:', err);
-      res.status(500).send('Error getting all temperaments');
-    }
-  },
-
-  // Get a temperament by ID
-  getTemperamentById: async (req, res) => {
-    const { id } = req.params;
-    try {
-      const temperament = await Temperament.getById(id);
-      res.json(temperament);
-    } catch (err) {
-      console.error('Error getting temperament by ID:', err);
-      res.status(500).send('Error getting temperament by ID');
-    }
-  },
-
-  // Create a new temperament
-  createTemperament: async (req, res) => {
+// Create a new temperament
+exports.createTemperament = async (req, res) => {
+  try {
     const { name } = req.body;
-    try {
-      const newTemperament = await Temperament.create(name);
-      res.status(201).json(newTemperament);
-    } catch (err) {
-      console.error('Error creating new temperament:', err);
-      res.status(500).send('Error creating new temperament');
-    }
-  },
-
-  // Update a temperament by ID
-  updateTemperamentById: async (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-    try {
-      const updatedTemperament = await Temperament.updateById(id, name);
-      res.json(updatedTemperament);
-    } catch (err) {
-      console.error('Error updating temperament by ID:', err);
-      res.status(500).send('Error updating temperament by ID');
-    }
-  },
-
-  // Delete a temperament by ID
-  deleteTemperamentById: async (req, res) => {
-    const { id } = req.params;
-    try {
-      await Temperament.deleteById(id);
-      res.send('Temperament deleted successfully');
-    } catch (err) {
-      console.error('Error deleting temperament by ID:', err);
-      res.status(500).send('Error deleting temperament by ID');
-    }
+    const temperament = await Temperament.create({ name });
+    res.json(temperament);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = temperamentController;
+// Get all temperaments
+exports.getAllTemperaments = async (req, res) => {
+  try {
+    const temperaments = await Temperament.findAll();
+    res.json(temperaments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get temperament by ID
+exports.getTemperamentById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const temperament = await Temperament.findByPk(id);
+    if (!temperament) {
+      res.status(404).json({ message: 'Temperament not found' });
+      return;
+    }
+    res.json(temperament);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update a temperament
+exports.updateTemperament = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    const temperament = await Temperament.findByPk(id);
+    if (!temperament) {
+      res.status(404).json({ message: 'Temperament not found' });
+      return;
+    }
+    temperament.name = name;
+    await temperament.save();
+    res.json(temperament);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete a temperament
+exports.deleteTemperament = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const temperament = await Temperament.findByPk(id);
+    if (!temperament) {
+      res.status(404).json({ message: 'Temperament not found' });
+      return;
+    }
+    await temperament.destroy();
+    res.json({ message: 'Temperament deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
