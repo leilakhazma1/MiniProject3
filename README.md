@@ -2,23 +2,38 @@
 
 Logic
 
-Physical Diagram: 
+Logical Diagram
+Breed
 
+Attributes:
+id (Primary Key)
+name
+description
+life_span
+origin
+wikipedia_url
+temperament_id (Foreign Key referencing Temperament)
+Entity: Temperament
+
+Attributes:
+id (Primary Key)
+name
+Physical Diagram
 Table: Breeds
 
-Columns: id (Primary Key), name, description, temperament, life_span, origin, wikipedia_url
-Table: Images
+Columns:
+id (Primary Key)
+name
+description
+life_span
+origin
+wikipedia_url
+temperament_id (Foreign Key referencing Temperament)
+Table: Temperaments
 
-Columns: id (Primary Key), breed_id (Foreign Key referencing Breeds), url
-
-Logical Diagram:
-
-Entity: Breed
-
-Attributes: id (Primary Key), name, description, temperament, life_span, origin, wikipedia_url
-Entity: Image
-
-Attributes: id (Primary Key), breed_id (Foreign Key referencing Breed), url
+Columns:
+id (Primary Key)
+name
 
 Instructions 4 Leila; 
 
