@@ -1,17 +1,22 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const breedRoutes = require('./routes/breedRoutes');
-const temperamentRoutes = require('./routes/temperamentRoutes');
+const axios = require('axios');
 
 const app = express();
+const port = 3000;
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// Routes for breeds
-app.use('/breeds', breedRoutes);
-
-// Routes for temperaments
-app.use('/temperaments', temperamentRoutes);
+// Route to fetch breeds from the Cat API
+app.get('/breeds', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.thecatapi.com/v1/breeds');
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching breeds:', error);
+    res.status(500).json({ error: 'Failed to fetch breeds' });
+  }
+});
 
 // Test route
 app.get('/', (req, res) => {
@@ -19,7 +24,6 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
-
